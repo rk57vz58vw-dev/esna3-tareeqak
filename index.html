@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101b3f">
+  <meta name="description" content="اصنع طريقك - منصة تعليمية لجميع المراحل الدراسية">
+  <title>اصنع طريقك | منصتك التعليمية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#">
+        <span class="brand-mark">ص</span>
+        <span><b>اصنع طريقك</b><small>طريقك للتميز يبدأ هنا</small></span>
+      </a>
+      <div class="side-label">القائمة الرئيسية</div>
+      <nav class="nav">
+        <button class="nav-link active" data-page="home"><span>⌂</span> الرئيسية</button>
+        <button class="nav-link" data-page="courses"><span>▣</span> الكورسات</button>
+        <button class="nav-link" data-page="exams"><span>✓</span> الاختبارات</button>
+        <button class="nav-link" data-page="library"><span>▤</span> المكتبة التعليمية</button>
+        <button class="nav-link" data-page="progress"><span>◷</span> تقدمي الدراسي</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-icon">✦</span><b>كل خطوة تقربك</b><p>استمر في التعلم، فنجاحك يبدأ بقرار.</p></div>
+        <button class="nav-link" id="profileBtn"><span>⚙</span> حسابي</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="فتح القائمة">☰</button>
+        <div class="crumb"><span>منصتك التعليمية</span><b id="pageTitle">الرئيسية</b></div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeBtn" title="تغيير المظهر">◐</button>
+          <button class="user-chip" id="userBtn"><span class="avatar">ط</span><span><b id="userName">طالب جديد</b><small>حساب الطالب</small></span><span>⌄</span></button>
+        </div>
+      </header>
+
+      <section class="content" id="page-home">
+        <div class="welcome-banner">
+          <div class="welcome-copy">
+            <span class="eyebrow">أهلاً بك في اصنع طريقك</span>
+            <h1>مستقبلك مش صدفة،<br><em>أنت اللي بتصنعه.</em></h1>
+            <p>ابدأ رحلتك التعليمية اليوم، وتعلّم على خطوتك وبالطريقة اللي تناسبك.</p>
+            <button class="primary-btn" data-go="courses">اكتشف الكورسات <span>←</span></button>
+          </div>
+          <div class="banner-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="book-emoji">📚</div><span class="float-card card-a">✦ تعلّم كل يوم</span><span class="float-card card-b">🎯 حقق هدفك</span></div>
+          <div class="banner-glow"></div>
+        </div>
+
+        <div class="section-heading"><div><span class="eyebrow">نظرة سريعة</span><h2>رحلتك التعليمية</h2></div><span class="muted">تابع تقدمك باستمرار</span></div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-icon purple">▣</span><div><small>الكورسات المسجلة</small><strong id="statCourses">0</strong></div><span class="stat-note">ابدأ كورسك الأول</span></article>
+          <article class="stat-card"><span class="stat-icon green">✓</span><div><small>اختبارات مكتملة</small><strong id="statExams">0</strong></div><span class="stat-note">التدريب يصنع الفرق</span></article>
+          <article class="stat-card"><span class="stat-icon orange">◷</span><div><small>نسبة الإنجاز</small><strong id="statProgress">0%</strong></div><span class="stat-note">خطوة بخطوة</span></article>
+        </div>
+
+        <div class="section-heading"><div><span class="eyebrow">ابدأ من مكانك</span><h2>المراحل التعليمية</h2></div></div>
+        <div class="stage-grid" id="stageGrid">
+          <button class="stage-card" data-stage="المرحلة الابتدائية"><span class="stage-symbol sky">✎</span><b>المرحلة الابتدائية</b><small>من الصف الأول إلى السادس</small><span class="stage-arrow">←</span></button>
+          <button class="stage-card" data-stage="المرحلة الإعدادية"><span class="stage-symbol mint">⌘</span><b>المرحلة الإعدادية</b><small>من الصف الأول إلى الثالث</small><span class="stage-arrow">←</span></button>
+          <button class="stage-card" data-stage="المرحلة الثانوية"><span class="stage-symbol peach">♧</span><b>المرحلة الثانوية</b><small>من الصف الأول إلى الثالث</small><span class="stage-arrow">←</span></button>
+          <button class="stage-card" data-stage="التعليم الجامعي"><span class="stage-symbol lilac">⌬</span><b>التعليم الجامعي</b><small>مسارات ومهارات متنوعة</small><span class="stage-arrow">←</span></button>
+        </div>
+
+        <div class="section-heading"><div><span class="eyebrow">اختيارات مميزة</span><h2>كورسات مقترحة</h2></div><button class="text-btn" data-go="courses">عرض الكل ←</button></div>
+        <div class="course-grid" id="featuredCourses"></div>
+      </section>
+
+      <section class="content hidden" id="page-courses">
+        <div class="page-intro"><span class="eyebrow">تعلم بطريقتك</span><h1>الكورسات التعليمية</h1><p>اختر مرحلتك ومادتك وابدأ التعلم في أي وقت.</p></div>
+        <div class="filters"><input id="courseSearch" type="search" placeholder="ابحث عن كورس أو مادة..."><select id="stageFilter"><option value="">كل المراحل</option><option>المرحلة الابتدائية</option><option>المرحلة الإعدادية</option><option>المرحلة الثانوية</option><option>التعليم الجامعي</option></select></div>
+        <div class="course-grid" id="allCourses"></div>
+      </section>
+
+      <section class="content hidden" id="page-exams">
+        <div class="page-intro"><span class="eyebrow">اختبر معلوماتك</span><h1>الاختبارات والتقييمات</h1><p>تدرب على الأسئلة واعرف مستواك فوراً.</p></div>
+        <div class="exam-layout"><div class="exam-panel"><div class="panel-icon">✦</div><h2>اختبار معلومات عامة</h2><p>مجموعة أسئلة تجريبية متنوعة لتجربة نظام الاختبارات.</p><div class="exam-meta"><span>٥ أسئلة</span><span>اختيار من متعدد</span><span>تصحيح فوري</span></div><button class="primary-btn" id="startExam">ابدأ الاختبار <span>←</span></button></div><div class="exam-side"><b>نصيحة لك</b><p>اقرأ السؤال جيداً، وحاول الإجابة بنفسك قبل مشاهدة النتيجة.</p><span>💡</span></div></div>
+        <div id="examArea"></div>
+      </section>
+
+      <section class="content hidden" id="page-library">
+        <div class="page-intro"><span class="eyebrow">مصادر تساعدك</span><h1>المكتبة التعليمية</h1><p>مكان واحد لتنظيم مذكراتك وملفاتك التعليمية.</p></div>
+        <div class="library-note"><span>📂</span><div><b>مكتبتك جاهزة للتنظيم</b><p>يمكنك إضافة ملفاتك وروابط المصادر التعليمية من لوحة الإدارة عند ربط المنصة بخادم.</p></div></div>
+        <div class="resource-grid"><article class="resource-card"><span>📘</span><b>ملخصات ومذكرات</b><small>ملفات PDF منظمة حسب المادة</small></article><article class="resource-card"><span>🧠</span><b>بنك الأسئلة</b><small>تدريبات للمراجعة والتثبيت</small></article><article class="resource-card"><span>🎥</span><b>مراجعات مسجلة</b><small>مراجعات مركزة قبل الاختبارات</small></article></div>
+      </section>
+
+      <section class="content hidden" id="page-progress">
+        <div class="page-intro"><span class="eyebrow">إنجازاتك</span><h1>تقدمي الدراسي</h1><p>كل دقيقة تعلم هي استثمار في مستقبلك.</p></div>
+        <div class="progress-box"><div><b>معدل إنجازك</b><strong id="bigProgress">0%</strong></div><div class="progress-track"><span id="progressBar"></span></div><p id="progressMessage">ابدأ أول كورس ليظهر تقدمك هنا.</p></div>
+        <div class="stats-grid"><article class="stat-card"><span class="stat-icon purple">▣</span><div><small>الكورسات</small><strong id="progressCourses">0</strong></div></article><article class="stat-card"><span class="stat-icon green">✓</span><div><small>الاختبارات</small><strong id="progressExams">0</strong></div></article></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-close" id="closeModal">×</button><div id="modalContent"></div></div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <footer class="site-footer">© 2026 اصنع طريقك — تعلّم اليوم، واصنع غدك.</footer>
+  <script src="app.js"></script>
+</body>
+</html>
