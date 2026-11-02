@@ -1,40 +1,61 @@
-const $ = (s, root=document) => root.querySelector(s);
-const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-const courses = [
- {id:1,title:"أساسيات اللغة العربية",subject:"اللغة العربية",stage:"المرحلة الابتدائية",teacher:"فريق اصنع طريقك",lessons:12,icon:"📖",cover:"cover-purple",desc:"تعلم القراءة والقواعد والتعبير بطريقة مبسطة."},
- {id:2,title:"الرياضيات من الصفر",subject:"الرياضيات",stage:"المرحلة الإعدادية",teacher:"فريق اصنع طريقك",lessons:18,icon:"➗",cover:"cover-green",desc:"افهم المفاهيم الرياضية وتدرّب على حل المسائل."},
- {id:3,title:"مبادئ اللغة الإنجليزية",subject:"اللغة الإنجليزية",stage:"المرحلة الثانوية",teacher:"فريق اصنع طريقك",lessons:15,icon:"🔤",cover:"cover-orange",desc:"قواعد ومفردات ومهارات تساعدك على التطور."},
- {id:4,title:"مهارات التفكير والبحث",subject:"مهارات جامعية",stage:"التعليم الجامعي",teacher:"فريق اصنع طريقك",lessons:10,icon:"🧠",cover:"cover-blue",desc:"طوّر مهارات البحث والتفكير النقدي والتعلم الذاتي."},
- {id:5,title:"العلوم حولنا",subject:"العلوم",stage:"المرحلة الابتدائية",teacher:"فريق اصنع طريقك",lessons:14,icon:"🔬",cover:"cover-blue",desc:"اكتشف العالم من حولك من خلال دروس سهلة."},
- {id:6,title:"مقدمة في البرمجة",subject:"الحاسب الآلي",stage:"المرحلة الثانوية",teacher:"فريق اصنع طريقك",lessons:20,icon:"💻",cover:"cover-purple",desc:"ابدأ التفكير البرمجي وتعرف على أساسيات كتابة الكود."}
-];
-const questions=[
- {q:"ما ناتج ٧ × ٨؟",a:["٥٤","٥٦","٦٤","٤٨"],correct:1},
- {q:"أي الكلمات التالية اسم؟",a:["يكتب","كتاب","اكتب","يذهب"],correct:1},
- {q:"ما الكوكب المعروف بالكوكب الأحمر؟",a:["الزهرة","المشتري","المريخ","زحل"],correct:2},
- {q:"كم عدد أيام الأسبوع؟",a:["خمسة","ستة","سبعة","ثمانية"],correct:2},
- {q:"أي مما يلي مصدر للطاقة المتجددة؟",a:["الفحم","النفط","الغاز","الشمس"],correct:3}
-];
-const getData=()=>{try{return JSON.parse(localStorage.getItem("esna3Data"))||{name:"طالب جديد",enrolled:[],completed:[],examCount:0}}catch{return{name:"طالب جديد",enrolled:[],completed:[],examCount:0}}};
-let data=getData();
-function save(){localStorage.setItem("esna3Data",JSON.stringify(data));updateStats()}
-function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400)}
-function updateStats(){const n=data.enrolled.length, e=data.examCount, p=Math.min(100,Math.round((data.completed.length/Math.max(1,courses.length))*100));$("#statCourses").textContent=n;$("#statExams").textContent=e;$("#statProgress").textContent=p+"%";$("#progressCourses").textContent=n;$("#progressExams").textContent=e;$("#bigProgress").textContent=p+"%";$("#progressBar").style.width=p+"%";$("#progressMessage").textContent=p?"أحسنت! استمر في رحلتك التعليمية.":"ابدأ أول كورس ليظهر تقدمك هنا."}
-function courseCard(c){return `<article class="course-card"><div class="course-cover ${c.cover}">${c.icon}</div><div class="course-body"><div class="course-tags"><span class="tag">${c.stage.replace("المرحلة ","")}</span><span class="tag">${c.subject}</span></div><h3>${c.title}</h3><p>${c.desc}</p><div class="course-foot"><span>◷ ${c.lessons} درساً · ${c.teacher}</span><button data-course="${c.id}">${data.enrolled.includes(c.id)?"متابعة الكورس":"التفاصيل ←"}</button></div></div></article>`}
-function renderCourses(){const featured=courses.slice(0,3);$("#featuredCourses").innerHTML=featured.map(courseCard).join("");filterCourses()}
-function filterCourses(){const q=($("#courseSearch")?.value||"").trim().toLowerCase(),stage=$("#stageFilter")?.value||"";$("#allCourses").innerHTML=courses.filter(c=>(!stage||c.stage===stage)&&(!q||(c.title+c.subject+c.desc).toLowerCase().includes(q))).map(courseCard).join("")||'<p class="muted">لا توجد كورسات مطابقة لبحثك.</p>'}
-function openModal(html){$("#modalContent").innerHTML=html;$("#modal").classList.remove("hidden")}
-function closeModal(){$("#modal").classList.add("hidden")}
-function courseDetails(id){const c=courses.find(x=>x.id===id);if(!c)return;openModal(`<span class="eyebrow">${c.stage}</span><h2 id="modalTitle">${c.title}</h2><p>${c.desc}</p><div class="exam-meta"><span>📚 ${c.lessons} درساً</span><span>👨‍🏫 ${c.teacher}</span></div><div class="library-note"><span>${c.icon}</span><div><b>محتوى الكورس</b><p>هذا نموذج تجريبي. أضف روابط الفيديو والمواد من لوحة إدارة متصلة بالخادم عند تجهيز النسخة المنشورة.</p></div></div><button class="primary-btn" id="enrollBtn">${data.enrolled.includes(id)?"أنت مسجل بالفعل":"سجل في الكورس"} <span>←</span></button>`);$("#enrollBtn").onclick=()=>{if(!data.enrolled.includes(id)){data.enrolled.push(id);save();renderCourses();toast("تم تسجيل الكورس في حسابك");}else toast("الكورس موجود في حسابك بالفعل");closeModal()}}
-function navigate(page){$$(".content").forEach(x=>x.classList.add("hidden"));$("#page-"+page).classList.remove("hidden");$$(".nav-link[data-page]").forEach(x=>x.classList.toggle("active",x.dataset.page===page));$("#pageTitle").textContent=({home:"الرئيسية",courses:"الكورسات",exams:"الاختبارات",library:"المكتبة التعليمية",progress:"تقدمي الدراسي"})[page];$("#sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"})}
-function showProfile(){openModal(`<h2 id="modalTitle">حساب الطالب</h2><p>اكتب اسمك ليظهر في لوحة منصتك.</p><div class="form-row"><label for="nameInput">اسم الطالب</label><input class="form-input" id="nameInput" maxlength="35" value="${data.name.replaceAll('"',"&quot;")}"></div><button class="primary-btn" id="saveName">حفظ التغييرات</button>`);$("#saveName").onclick=()=>{const name=$("#nameInput").value.trim();if(!name)return toast("اكتب الاسم أولاً");data.name=name;save();$("#userName").textContent=name;closeModal();toast("تم تحديث الاسم")}}
-function startExam(){let current=0,answers=[];const area=$("#examArea");function draw(){if(current>=questions.length){const score=answers.reduce((n,a,i)=>n+(a===questions[i].correct?1:0),0);data.examCount++;save();area.innerHTML=`<div class="exam-question"><span class="eyebrow">انتهى الاختبار</span><h2>نتيجتك ${score} من ${questions.length}</h2><p>${score>=4?"ممتاز! أداء رائع.":score>=2?"بداية جيدة، راجع الأسئلة وحاول مرة أخرى.":"لا تتوقف عن المحاولة، التعلم رحلة."}</p><div class="exam-result">تم حفظ عدد الاختبارات في تقدمك الدراسي.</div><button class="primary-btn" id="retryExam">إعادة الاختبار</button></div>`;$("#retryExam").onclick=()=>{current=0;answers=[];draw()};return}const q=questions[current];area.innerHTML=`<div class="exam-question"><span class="eyebrow">السؤال ${current+1} من ${questions.length}</span><h3>${q.q}</h3>${q.a.map((a,i)=>`<label class="answer-option"><input type="radio" name="answer" value="${i}"> ${a}</label>`).join("")}<button class="primary-btn" id="nextQuestion">${current===questions.length-1?"إنهاء الاختبار":"السؤال التالي"} ←</button></div>`;$("#nextQuestion").onclick=()=>{const selected=$('input[name="answer"]:checked');if(!selected)return toast("اختر إجابة للمتابعة");answers.push(Number(selected.value));current++;draw()}}draw();area.scrollIntoView({behavior:"smooth",block:"start"})}
-$$(".nav-link[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
-document.addEventListener("click",e=>{const go=e.target.closest("[data-go]");if(go)navigate(go.dataset.go);const stage=e.target.closest("[data-stage]");if(stage){navigate("courses");$("#stageFilter").value=stage.dataset.stage;filterCourses()}const course=e.target.closest("[data-course]");if(course)courseDetails(Number(course.dataset.course))});
-$("#courseSearch").addEventListener("input",filterCourses);$("#stageFilter").addEventListener("change",filterCourses);
-$("#startExam").addEventListener("click",startExam);$("#profileBtn").addEventListener("click",showProfile);$("#userBtn").addEventListener("click",showProfile);
-$("#closeModal").addEventListener("click",closeModal);$("#modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-$("#menuBtn").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
-$("#themeBtn").addEventListener("click",()=>{document.body.classList.toggle("dark");localStorage.setItem("esna3Dark",document.body.classList.contains("dark"))});
-if(localStorage.getItem("esna3Dark")==="true")document.body.classList.add("dark");
-$("#userName").textContent=data.name;renderCourses();updateStats();
+(() => {
+  "use strict";
+  const cfg = window.ESNA3_CONFIG || {};
+  const $ = s => document.querySelector(s);
+  const loginView=$("#loginView"), dashboard=$("#dashboardView"), loginForm=$("#loginForm");
+  let session = null, courses = [];
+  const storageKey="esna3_teacher_session_v1";
+  const say=(msg)=>{const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400)};
+  const configOK=()=>cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY && !cfg.SUPABASE_URL.includes("YOUR-PROJECT") && !cfg.SUPABASE_ANON_KEY.includes("YOUR_");
+  const headers=(extra={})=>({"apikey":cfg.SUPABASE_ANON_KEY,"Authorization":"Bearer "+(session?.access_token||cfg.SUPABASE_ANON_KEY),"Content-Type":"application/json",...extra});
+  async function api(path,options={}) {
+    if(!configOK()) throw new Error("أضف بيانات Supabase في ملف config.js أولاً.");
+    let res=await fetch(cfg.SUPABASE_URL+"/rest/v1/"+path,{...options,headers:headers(options.headers||{})});
+    if(res.status===401 && session?.refresh_token){
+      const rr=await fetch(cfg.SUPABASE_URL+"/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:{"apikey":cfg.SUPABASE_ANON_KEY,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:session.refresh_token})});
+      if(rr.ok){session=await rr.json();localStorage.setItem(storageKey,JSON.stringify(session));res=await fetch(cfg.SUPABASE_URL+"/rest/v1/"+path,{...options,headers:headers(options.headers||{})});}
+    }
+    const data=await res.json().catch(()=>null);
+    if(!res.ok) throw new Error(data?.message||data?.msg||"تعذر تنفيذ الطلب. راجع إعدادات قاعدة البيانات والصلاحيات.");
+    return data;
+  }
+  function showDashboard(){loginView.classList.add("hidden");dashboard.classList.remove("hidden");$("#logoutBtn").classList.remove("hidden");$("#teacherLabel").textContent=session?.user?.email||"حساب المعلم";}
+  function showLogin(){dashboard.classList.add("hidden");loginView.classList.remove("hidden");$("#logoutBtn").classList.add("hidden");}
+  loginForm.addEventListener("submit",async e=>{
+    e.preventDefault();$("#loginError").textContent="";
+    if(!configOK()){ $("#loginError").textContent="يجب إعداد رابط Supabase ومفتاح Anon في config.js قبل تسجيل الدخول.";return; }
+    const fd=new FormData(loginForm);
+    try{
+      const res=await fetch(cfg.SUPABASE_URL+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"apikey":cfg.SUPABASE_ANON_KEY,"Content-Type":"application/json"},body:JSON.stringify({email:fd.get("email"),password:fd.get("password")})});
+      const data=await res.json();if(!res.ok)throw new Error(data.msg||data.message||"بيانات الدخول غير صحيحة.");
+      session=data;localStorage.setItem(storageKey,JSON.stringify(session));showDashboard();await loadCourses();
+    }catch(err){$("#loginError").textContent=err.message;}
+  });
+  $("#logoutBtn").addEventListener("click",async()=>{try{await fetch(cfg.SUPABASE_URL+"/auth/v1/logout",{method:"POST",headers:headers()});}catch{}localStorage.removeItem(storageKey);session=null;courses=[];showLogin();});
+  function formData(){const f=$("#courseForm"),fd=new FormData(f);return {title:String(fd.get("title")).trim(),subject:String(fd.get("subject")).trim(),stage:String(fd.get("stage")),teacher_name:String(fd.get("teacher_name")).trim(),lessons:Number(fd.get("lessons"))||1,description:String(fd.get("description")).trim(),lesson_url:String(fd.get("lesson_url")).trim()||null,image_url:String(fd.get("image_url")).trim()||null,status:String(fd.get("status"))||"published"};}
+  function resetForm(){const f=$("#courseForm");f.reset();f.elements.id.value="";$("#formTitle").textContent="إضافة كورس جديد";$("#saveBtn").textContent="حفظ الكورس";$("#cancelEditBtn").classList.add("hidden");}
+  $("#cancelEditBtn").addEventListener("click",resetForm);
+  $("#courseForm").addEventListener("submit",async e=>{
+    e.preventDefault();const f=e.currentTarget;const id=f.elements.id.value;const item=formData();
+    if(item.lesson_url&&!/^https?:\/\//i.test(item.lesson_url)){say("اكتب رابطًا يبدأ بـ https:// أو http://");return;}
+    try{
+      if(id) await api("courses?id=eq."+encodeURIComponent(id),{method:"PATCH",headers:{"Prefer":"return=representation"},body:JSON.stringify(item)});
+      else await api("courses",{method:"POST",headers:{"Prefer":"return=representation"},body:JSON.stringify(item)});
+      resetForm();$("#formMessage").textContent="تم حفظ الكورس في قاعدة البيانات المشتركة.";say("تم حفظ الكورس بنجاح");await loadCourses();
+    }catch(err){say(err.message);$("#formMessage").textContent=err.message;}
+  });
+  function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  function render(){
+    $("#totalCount").textContent=courses.length;$("#publishedCount").textContent=courses.filter(c=>c.status==="published").length;$("#draftCount").textContent=courses.filter(c=>c.status==="draft").length;
+    $("#courseList").innerHTML=courses.length?courses.map(c=>`<div class="course-row"><div class="meta"><b>${safe(c.title)}</b><small>${safe(c.subject)} · ${safe(c.stage)} · ${safe(c.teacher_name)} · ${Number(c.lessons)||1} درس</small></div><span class="status ${c.status==="draft"?"draft":""}">${c.status==="draft"?"مسودة":"منشور"}</span><div class="row-actions"><button class="edit" data-edit="${safe(c.id)}">تعديل</button><button class="delete" data-delete="${safe(c.id)}">حذف</button></div></div>`).join(""):'<p class="empty">لا توجد كورسات حتى الآن. أضف أول كورس من النموذج.</p>';
+  }
+  async function loadCourses(){try{courses=await api("courses?select=*&order=created_at.desc");render();}catch(err){say(err.message);$("#courseList").innerHTML=`<p class="empty">${safe(err.message)}</p>`;}}
+  $("#courseList").addEventListener("click",async e=>{
+    const edit=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]");
+    if(edit){const c=courses.find(x=>x.id===edit.dataset.edit);if(!c)return;const f=$("#courseForm");Object.entries(c).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v??"";});f.elements.id.value=c.id;$("#formTitle").textContent="تعديل الكورس";$("#saveBtn").textContent="حفظ التعديلات";$("#cancelEditBtn").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});}
+    if(del){if(!confirm("هل تريد حذف هذا الكورس؟"))return;try{await api("courses?id=eq."+encodeURIComponent(del.dataset.delete),{method:"DELETE"});say("تم حذف الكورس");await loadCourses();}catch(err){say(err.message);}}
+  });
+  $("#refreshBtn").addEventListener("click",loadCourses);
+  try{session=JSON.parse(localStorage.getItem(storageKey)||"null");}catch{session=null;}
+  if(session?.access_token){showDashboard();loadCourses();}else showLogin();
+})();
